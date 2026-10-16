@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeReach | AI-Powered Disaster Relief & Resource Matching</title>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-badge">🛡️</div>
+        <div class="brand-text">
+          <h1>SafeReach</h1>
+          <p>AI-Powered System for Disaster Information & Relief Matching</p>
+        </div>
+      </div>
+
+      <!-- Live Emergency Status -->
+      <div class="emergency-pill">
+        <span class="pulse-dot"></span>
+        <span>غرفة عمليات الطوارئ الحية: منطقة المنصورة</span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab-map">
+          <span>🗺️</span>
+          <span>الخريطة والمسار الآمن</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-ir">
+          <span>🔍</span>
+          <span>محرك استرجاع المعلومات (IR)</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-vision">
+          <span>👁️</span>
+          <span>تحليل أضرار الصور (CV)</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-matching">
+          <span>⚖️</span>
+          <span>توزيع الموارد الذكي</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-academic">
+          <span>🎓</span>
+          <span>دليل المناقشة الأكاديمية</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+
+    <!-- ==================================================== -->
+    <!-- TAB 1: SAFE ROUTING MAP (ALGORITHMS - DIJKSTRA / A*) -->
+    <!-- ==================================================== -->
+    <section id="tab-map" class="tab-content active">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2>
+            <span>🗺️ الخريطة التفاعلية والمسار الآمن للطوارئ</span>
+            <span class="course-badge algorithms">Algorithms: Dijkstra & A*</span>
+          </h2>
+          <p class="section-desc">
+            توجيه المستغيثين وسيارات الإسعاف عبر أقصر طريق آمن متفادياً مناطق الغمر السيولي والانهيارات الإنشائية.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Map Viewport -->
+        <div class="card" style="padding: 12px;">
+          <div id="map"></div>
+          
+          <div class="map-controls-bar">
+            <button class="btn btn-accent" onclick="calculateSafeRoute()">
+              <span>🛡️</span>
+              <span>احسب المسار الآمن (Safe Dijkstra)</span>
+            </button>
+            <button class="btn btn-danger-outline" onclick="showDangerousRoute()">
+              <span>⚠️</span>
+              <span>عرض المسار المباشر الخطر (للمقارنة)</span>
+            </button>
+            <button class="btn btn-secondary" onclick="map.flyTo([31.0409, 31.3725], 14)">
+              <span>🔄</span>
+              <span>إعادة ضبط العرض</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Routing Information Sidebar -->
+        <div class="card">
+          <h3 class="card-title">
+            <span>📍 بيانات التوجيه والإخلاء</span>
+          </h3>
+
+          <div class="route-summary">
+            <div class="route-stat">
+              <span>نقطة الانطلاق (المستغيث):</span>
+              <span>موقعك الحالي (شارع النخلة)</span>
+            </div>
+            <div class="route-stat">
+              <span>نقطة الوصول (المأوى الأقرب):</span>
+              <span>مركز إيواء استاد المنصورة</span>
+            </div>
+            <div class="route-stat">
+              <span>المسافة الإجمالية:</span>
+              <span id="routeDistance">1.9 كم</span>
+            </div>
+            <div class="route-stat">
+              <span>الوقت المتوقع للوصول:</span>
+              <span id="routeDuration">6 دقائق</span>
+            </div>
+            <div class="route-stat">
+              <span>مستوى الأمان:</span>
+              <span id="routeSafety"><span class="status-badge safe">100% آمن</span></span>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px; font-size: 13px; line-height: 1.6; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid var(--border);" id="routeAlgInfo">
+            <b>تحليل خوارزمية التوجيه:</b><br>
+            جراف الطرق مزود بأوزان حركية للأخطار. عند اكتشاف منطقة سيول (شارع الجيش)، تم رفع وزن المسار تلقائياً بمقدار 1000×، مما أجبر خوارزمية Dijkstra على اختيار مسار المشاية السفلي البديل والمؤمن تماماً.
+          </div>
+
+          <div style="margin-top: 20px;">
+            <h4 style="font-size:14px; margin-bottom:8px; color:var(--secondary);">دليل الخريطة (Map Legend):</h4>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; font-size:12px;">
+              <div>🔴 <span style="color:#dc2626;">موقع المستغيث</span></div>
+              <div>🏠 <span style="color:#059669;">مراكز الإيواء</span></div>
+              <div>🏥 <span style="color:#dc2626;">مستشفيات وطوارئ</span></div>
+              <div>🍞 <span style="color:#d97706;">مستودعات الغذاء</span></div>
+              <div>💧 <span style="color:#0284c7;">محطات مياه الشرب</span></div>
+              <div>🟥 <span style="color:#dc2626;">منطقة سيول حمراء</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- TAB 2: INFORMATION RETRIEVAL (IR SEARCH & VERIFICATION)-->
+    <!-- ==================================================== -->
+    <section id="tab-ir" class="tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2>
+            <span>🔍 محرك استرجاع المعلومات والتحقق من المنشورات</span>
+            <span class="course-badge ir">Information Retrieval: Inverted Index & BM25</span>
+          </h2>
+          <p class="section-desc">
+            بحث واسترجاع سريع لبلاغات الإغاثة ومنشورات المساعدات الموثقة مع استبعاد الشائعات وتصنيف المصادر الرسمية.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <!-- Search Bar Input -->
+        <div class="search-container">
+          <input type="text" id="irSearchInput" class="search-input" placeholder="ابحث في بلاغات الإغاثة (مثال: مساعدات غذائية، إيواء، مستشفى الطوارئ، سيول المنصورة)...">
+          <button id="irSearchBtn" class="btn btn-primary">
+            <span>🔍 بحث فوري</span>
+          </button>
+        </div>
+
+        <!-- Quick Query Tags -->
+        <div class="quick-tags">
+          <span style="font-size:12px; color:var(--text-muted); align-self:center;">اقتراحات سريعة:</span>
+          <span class="tag-chip" onclick="quickSearch('مساعدات غذائية في المنصورة')">🍞 مساعدات غذائية</span>
+          <span class="tag-chip" onclick="quickSearch('مركز إيواء استاد المنصورة')">🏠 مراكز إيواء</span>
+          <span class="tag-chip" onclick="quickSearch('نقطة إسعاف وأدوية طوارئ')">🏥 رعاية طبية وأدوية</span>
+          <span class="tag-chip" onclick="quickSearch('استغاثة محاصرين شارع الجمهورية')">🚨 استغاثات عاجلة</span>
+          <span class="tag-chip" onclick="quickSearch('شائعات وتكذيب كوبري طلخا')">⚠️ فحص الشائعات</span>
+        </div>
+
+        <!-- IR Algorithmic Controls -->
+        <div class="ir-settings-bar">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span><b>نموذج الترتيب (Ranking Model):</b></span>
+            <select id="irModelSelect" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border);">
+              <option value="bm25" selected>Okapi BM25 (الموصى به أكاديمياً)</option>
+              <option value="tfidf">Vector Space Model (TF-IDF)</option>
+            </select>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span><b>وزن الموثوقية (Credibility Weight α):</b></span>
+            <input type="range" id="alphaSlider" min="0" max="1" step="0.1" value="0.7" style="vertical-align:middle;">
+            <span id="alphaVal" style="font-weight:bold; color:var(--primary);">0.7</span>
+          </div>
+        </div>
+
+        <!-- Results List -->
+        <div id="irResultsList" class="ir-results-list">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- TAB 3: COMPUTER VISION & DAMAGE ASSESSMENT -->
+    <!-- ==================================================== -->
+    <section id="tab-vision" class="tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2>
+            <span>👁️ نظام الرؤية الحاسوبية وتحليل أضرار الكوارث</span>
+            <span class="course-badge vision">Pattern Recognition / Computer Vision</span>
+          </h2>
+          <p class="section-desc">
+            تحليل وتصنيف صور الكوارث للكشف التلقائي عن المباني المتصدعة والمياه الغامرة وتحديد مؤشر الخطورة (DSI).
+          </p>
+        </div>
+      </div>
+
+      <div class="vision-grid">
+        <!-- Left: Canvas Area -->
+        <div class="card">
+          <div class="canvas-wrapper">
+            <canvas id="visionCanvas"></canvas>
+          </div>
+
+          <!-- Scene selector buttons -->
+          <div class="sample-scenes-bar">
+            <span style="font-size:12px; color:var(--text-muted); align-self:center;">اختر نموذجاً للاختبار:</span>
+            <button class="scene-btn active" data-scene="flood" onclick="selectCVScene('flood')">
+              🌊 فيضان شارع الجمهورية
+            </button>
+            <button class="scene-btn" data-scene="collapse" onclick="selectCVScene('collapse')">
+              🏚️ انهيار مبنى سكني
+            </button>
+            <button class="scene-btn" data-scene="shelter" onclick="selectCVScene('shelter')">
+              🏕️ مأوى آمن مجهز
+            </button>
+            
+            <label class="btn btn-secondary" style="padding:6px 12px; font-size:12px; cursor:pointer;">
+              <span>📁 رفع صورة من جهازك</span>
+              <input type="file" id="cvUploadInput" accept="image/*" style="display:none;">
+            </label>
+          </div>
+        </div>
+
+        <!-- Right: AI Damage Severity Dashboard -->
+        <div class="card">
+          <h3 class="card-title">
+            <span>📊 تقرير تقييم الأضرار الآلي (AI Report)</span>
+          </h3>
+
+          <div class="gauge-box">
+            <div style="font-size:12px; color:var(--text-muted);">مؤشر شدة الكارثة (Damage Severity Index)</div>
+            <div id="cvSeverityNum" class="severity-number">86.5%</div>
+            <div id="cvSeverityLabel" class="severity-label">CRITICAL (حرج - تدخل فوري)</div>
+          </div>
+
+          <div class="metric-bar-group">
+            <div class="metric-bar-label">
+              <span>نسبة غمر المياه للسطح:</span>
+              <span id="cvFloodText" style="font-weight:bold;">68%</span>
+            </div>
+            <div class="progress-track">
+              <div id="cvFloodBar" class="progress-fill" style="width:68%; background:#0284c7;"></div>
+            </div>
+          </div>
+
+          <div class="metric-bar-group">
+            <div class="metric-bar-label">
+              <span>نسبة الأضرار الإنشائية بالمباني:</span>
+              <span id="cvDamageText" style="font-weight:bold;">45%</span>
+            </div>
+            <div class="progress-track">
+              <div id="cvDamageBar" class="progress-fill" style="width:45%; background:#dc2626;"></div>
+            </div>
+          </div>
+
+          <div class="metric-bar-group">
+            <div class="metric-bar-label">
+              <span>أشخاص تم رصدهم في خطر:</span>
+              <span id="cvPeopleCount" style="font-weight:bold; color:#ea580c;">4 أفراد</span>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid var(--border);">
+            <div style="font-size:12px; font-weight:bold; color:var(--secondary); margin-bottom:4px;">القرار التكتيكي المقترح:</div>
+            <p id="cvActionPlan" style="font-size:12px; color:#475569; line-height:1.5;">
+              إرسال قوارب إنقاذ مائية عاجلة مع فرق دفاع مدني لنقل الأسر المحاصرة.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- TAB 4: RESOURCE MATCHING (BIPARTITE MATCHING) -->
+    <!-- ==================================================== -->
+    <section id="tab-matching" class="tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2>
+            <span>⚖️ خوارزمية التوزيع والمطابقة الذكية للموارد</span>
+            <span class="course-badge algorithms">Algorithms: Bipartite Matching</span>
+          </h2>
+          <p class="section-desc">
+            مطابقة احتياجات المستغيثين الحرجة بالمراكز التي تمتلك السعة والإمكانيات الكافية طبقاً لمعايير الأولوية والمسافة.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3 style="font-size:16px; font-weight:bold; color:var(--secondary);">سجل التخصيص الآلي لطلبات الاستغاثة</h3>
+            <p style="font-size:12px; color:var(--text-muted);">خوارزمية Kuhn / Max Bipartite Matching مع ترتيب الأولويات (Urgency Priority Queue)</p>
+          </div>
+          <button class="btn btn-primary" onclick="initMatching()">
+            <span>⚡ إعادة تشغيل خوارزمية المطابقة</span>
+          </button>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="matching-table">
+            <thead>
+              <tr>
+                <th>المستغيث / الجهة</th>
+                <th>درجة الأولوية</th>
+                <th>الاحتياجات المطلوبة</th>
+                <th>مركز الإغاثة المخصص</th>
+                <th>المسافة</th>
+                <th>حالة التخصيص</th>
+              </tr>
+            </thead>
+            <tbody id="matchingTableBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center;">
+            <div style="font-size:12px; color:var(--text-muted);">نسبة نجاح التوزيع</div>
+            <div style="font-size:24px; font-weight:bold; color:#059669;">100%</div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center;">
+            <div style="font-size:12px; color:var(--text-muted);">متوسط مسافة الوصول</div>
+            <div style="font-size:24px; font-weight:bold; color:#0284c7;">0.98 كم</div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center;">
+            <div style="font-size:12px; color:var(--text-muted);">الحالات الحرجة المكتملة</div>
+            <div style="font-size:24px; font-weight:bold; color:#dc2626;">2 من 2 (فوري)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- TAB 5: ACADEMIC DEFENSE & PRESENTATION GUIDE -->
+    <!-- ==================================================== -->
+    <section id="tab-academic" class="tab-content">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2>
+            <span>🎓 دليل المناقشة الأكاديمية والرد على أسئلة الدكاترة</span>
+            <span class="course-badge algorithms">IR + Algorithms + Pattern Recognition</span>
+          </h2>
+          <p class="section-desc">
+            إجابات نموذجية ومحكمة لكل سؤال متوقع في مناقشة المشروع أمام لجان التحكيم الجامعية.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-q">
+          <span>❓ السؤال 1: إزاي ربطتوا الـ IR مع الـ Algorithms مع الـ Computer Vision في مشروع واحد؟</span>
+        </div>
+        <div class="faq-a">
+          <b>الإجابة:</b> في حالات الكوارث الطبيعية، البيانات بتوصل من مصدرين: <b>نصوص</b> (استغاثات ومنشورات) و<b>صور</b> (كاميرات وأقمار صناعية).
+          <br>1. <b>الـ Computer Vision (Pattern):</b> بيحلل صور الكارثة ويكتشف الطرق المغمورة بالسيول والمباني المنهارة.
+          <br>2. <b>الـ Algorithms:</b> بياخد مخرجات الرؤية الحاسوبية ويحول الطرق المغمورة إلى "أوزان إعاقة عالية"، فتقوم خوارزمية <b>Dijkstra / A*</b> برسم مسار آمن تلقائياً لتفادي الخطر.
+          <br>3. <b>الـ Information Retrieval (IR):</b> بيستقبل مئات آلاف المنشورات، ويفلتر الشائعات عبر <b>Inverted Index و BM25</b>، ويوجه المستغيثين للمصادر الرسمية الموثقة مثل الهلال الأحمر.
+        </div>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-q">
+          <span>❓ السؤال 2: إيه المعادلات والخوارزميات الفعلية المطبقة في كود الـ IR؟</span>
+        </div>
+        <div class="faq-a">
+          <b>الإجابة:</b>
+          طبقنا الـ <code class="code-inline">Inverted Index</code> مع <code class="code-inline">Okapi BM25</code> بالمعادلة القياسية:
+          <br><code class="code-inline">Score(D, Q) = Σ IDF(q) * [ (f(q, D) * (k1 + 1)) / (f(q, D) + k1 * (1 - b + b * (|D| / avgdl))) ]</code>
+          مع بارامترات <code class="code-inline">k1 = 1.5</code> و <code class="code-inline">b = 0.75</code>.
+          بالإضافة لـ <b>Credibility Filter</b> يدمج وزن موثوقية المصدر (<code class="code-inline">α * BM25 + (1 - α) * Credibility</code>) لإقصاء الشائعات وحجبها في حالات الطوارئ.
+        </div>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-q">
+          <span>❓ السؤال 3: إيه خوارزميات الـ Algorithms وليه اختارتوها؟</span>
+        </div>
+        <div class="faq-a">
+          <b>الإجابة:</b>
+          1. <b>خوارزمية Dijkstra / A*:</b> لحساب أقصر مسار على جراف شبكة الطرق (<code class="code-inline">O(E + V log V)</code>). الفرق الجوهري هنا هو <b>Dynamic Hazard Penalty</b>: الطريق المغمور لا يُعامل كمسافة عادية بل يُضرب في معامل خطورة <code class="code-inline">×1000</code> ليتم تجنبه.
+          <br>2. <b>خوارزمية Maximum Bipartite Matching:</b> لمطابقة مجموعتين ثنائيتين (مجموعة المتضررين ومجموعة مراكز الإغاثة) طبقاً للسعة المتاحة ونوع الدعم (مأوى، علاج، غذاء) مع <code class="code-inline">Priority Queue</code> لتسليم الحالات الحرجة أولاً.
+        </div>
+      </div>
+
+      <div class="faq-card">
+        <div class="faq-q">
+          <span>❓ السؤال 4: نموذج الـ Pattern Recognition بيشتغل إزاي وبيحسب الـ Severity منين؟</span>
+        </div>
+        <div class="faq-a">
+          <b>الإجابة:</b>
+          النموذج يعتمد على بنية كشف الأجسام (Object Detection - YOLO architecture) للتعرف على كلاسات محددة: <code class="code-inline">flooded_area</code>, <code class="code-inline">damaged_building</code>, <code class="code-inline">person_in_need</code>.
+          ويقوم بحساب مؤشر شدة الضرر (Disaster Damage Severity Index - DSI) بالمعادلة:
+          <br><code class="code-inline">DSI = (0.40 * Flood_Ratio) + (0.45 * Structural_Damage_Ratio) + People_Penalty</code>
+          وتصنيفها آلياً إلى درجات (Low, Moderate, Severe, Critical).
+        </div>
+      </div>
+
+      <div class="faq-card" style="background:#f0fdf4; border-color:#86efac;">
+        <div class="faq-q" style="color:#166534;">
+          <span>💡 مسارات ملفات الكود للمناقشة:</span>
+        </div>
+        <div class="faq-a" style="color:#14532d;">
+          تقدر تفتح الأكواد دي في الـ VS Code وتوريها للدكتور مباشرة:
+          <ul style="margin-top:6px; margin-right:20px; line-height:1.8;">
+            <li><b>كود استرجاع المعلومات:</b> <code class="code-inline">SafeReach/core/ir_engine.py</code></li>
+            <li><b>كود الخوارزميات والتوجيه والمطابقة:</b> <code class="code-inline">SafeReach/core/algorithms_module.py</code></li>
+            <li><b>كود الرؤية الحاسوبية وتحديد الضرر:</b> <code class="code-inline">SafeReach/core/vision_module.py</code></li>
+            <li><b>الواجهة التفاعلية والخريطة:</b> <code class="code-inline">SafeReach/web/index.html</code></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div style="max-width:1350px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div>
+        <b>SafeReach Platform</b> — مشروع الذكاء الاصطناعي لإدارة الكوارث ومطابقة الموارد (IR + Algorithms + Pattern Recognition)
+      </div>
+      <div style="font-size:12px;">
+        تم التطوير للتقييم الأكاديمي الجامعي 🎓
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JavaScript Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- SafeReach Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

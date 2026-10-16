@@ -1,0 +1,17 @@
+# Ignore executable binaries
+*.exe
+cloudflared.exe
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store

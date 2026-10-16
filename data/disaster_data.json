@@ -1,0 +1,271 @@
+{
+  "project": "SafeReach",
+  "version": "1.0.0",
+  "description": "AI-Powered System for Real-Time Disaster Information and Relief Resource Matching",
+  "disaster_center": {
+    "name": "Mansoura City Center - Flood & Emergency Zone",
+    "lat": 31.0409,
+    "lng": 31.3785,
+    "zoom": 14
+  },
+  "hazard_zones": [
+    {
+      "id": "HZ-01",
+      "name": "شارع الجيش - منطقة غمر سيول حادة",
+      "name_en": "El-Geish St - Severe Flood Hazard",
+      "type": "flood",
+      "severity": "critical",
+      "polygon": [
+        [31.0420, 31.3760],
+        [31.0450, 31.3820],
+        [31.0390, 31.3850],
+        [31.0370, 31.3790]
+      ],
+      "risk_penalty": 1000,
+      "description": "ارتفاع منسوب المياه 1.5 متر - طريق مغلق تماماً أمام السيارات العادية"
+    },
+    {
+      "id": "HZ-02",
+      "name": "حي الجامعة - مبنى متصدع وخطر انهيار",
+      "name_en": "University District - Structural Damage",
+      "type": "collapse",
+      "severity": "high",
+      "polygon": [
+        [31.0330, 31.3600],
+        [31.0360, 31.3650],
+        [31.0310, 31.3680],
+        [31.0290, 31.3630]
+      ],
+      "risk_penalty": 500,
+      "description": "سقوط أجزاء من واجهات مباني وتكدس حطام"
+    }
+  ],
+  "resource_centers": [
+    {
+      "id": "RC-01",
+      "name": "مركز إيواء استاد المنصورة (الهلال الأحمر)",
+      "name_en": "Mansoura Stadium Shelter (Red Crescent)",
+      "type": "shelter",
+      "category": "مأوى رئيسي",
+      "lat": 31.0460,
+      "lng": 31.3650,
+      "capacity": 500,
+      "occupied": 180,
+      "supplies": {
+        "food_packs": 1200,
+        "clean_water_liters": 4000,
+        "blankets": 650,
+        "first_aid_kits": 120
+      },
+      "status": "active",
+      "phone": "+20 50 2345678",
+      "verified": true
+    },
+    {
+      "id": "RC-02",
+      "name": "نقطة إسعاف ومستشفى الطوارئ الجامعي",
+      "name_en": "Emergency University Hospital & Medical Post",
+      "type": "medical",
+      "category": "رعاية طبية وإسعاف",
+      "lat": 31.0415,
+      "lng": 31.3550,
+      "capacity": 150,
+      "occupied": 85,
+      "supplies": {
+        "icu_beds": 14,
+        "blood_units": 45,
+        "ambulances": 6,
+        "medical_staff": 25
+      },
+      "status": "active",
+      "phone": "+20 50 2212345",
+      "verified": true
+    },
+    {
+      "id": "RC-03",
+      "name": "مستودع توزيع الإغاثة الغذائية - المحافظة",
+      "name_en": "Governorate Food Relief Depot",
+      "type": "food",
+      "category": "مساعدات غذائية",
+      "lat": 31.0310,
+      "lng": 31.3880,
+      "capacity": 1000,
+      "occupied": 320,
+      "supplies": {
+        "food_packs": 3500,
+        "baby_formula": 400,
+        "clean_water_liters": 8000
+      },
+      "status": "active",
+      "phone": "+20 50 2234900",
+      "verified": true
+    },
+    {
+      "id": "RC-04",
+      "name": "محطة مياه نقية وإغاثة متنقلة - حي توريل",
+      "name_en": "Touril Clean Water & Aid Station",
+      "type": "water",
+      "category": "مياه صالحة للشرب",
+      "lat": 31.0510,
+      "lng": 31.3920,
+      "capacity": 300,
+      "occupied": 40,
+      "supplies": {
+        "clean_water_liters": 15000,
+        "water_purification_tablets": 2000
+      },
+      "status": "active",
+      "phone": "+20 50 2298765",
+      "verified": true
+    }
+  ],
+  "disaster_posts": [
+    {
+      "id": "POST-001",
+      "title": "توزيع وجبات ساخنة ومياه نقية في مدرسة ابن لقمان بالمنصورة",
+      "text": "تعلن جمعية الهلال الأحمر المصري عن وصول قوافل الإغاثة الغذائية إلى مدرسة ابن لقمان بالمنصورة لتوزيع 1000 وجبة ومياه شرب للمتضررين من السيول. الرجاء التوجه للموقع بهدوء.",
+      "category": "food",
+      "source": "الهلال الأحمر المصري",
+      "source_type": "official_ngo",
+      "credibility_score": 0.98,
+      "verified": true,
+      "location": "المنصورة - مدرسة ابن لقمان",
+      "lat": 31.0440,
+      "lng": 31.3810,
+      "timestamp": "منذ 15 دقيقة",
+      "tags": ["وجبات", "مساعدات غذائية", "المنصورة", "مياه", "الهلال الأحمر"]
+    },
+    {
+      "id": "POST-002",
+      "title": "فتح مركز إيواء عاجل في الصالة المغطاة باستاد المنصورة",
+      "text": "بتوجيهات غرفة إدارة الأزمات، تم تجهيز الصالة المغطاة باستاد المنصورة كمركز إيواء رئيسي مجهز بـ 500 سرير وأغطية ووجبات ومولدات كهرباء، ومتاح الآن للأسر التي تضررت منازلها.",
+      "category": "shelter",
+      "source": "محافظة الدقهلية - غرفة العمليات",
+      "source_type": "government",
+      "credibility_score": 0.99,
+      "verified": true,
+      "location": "استاد المنصورة الرياضي",
+      "lat": 31.0460,
+      "lng": 31.3650,
+      "timestamp": "منذ 30 دقيقة",
+      "tags": ["إيواء", "ملجأ", "استاد المنصورة", "مأوى", "أسرة", "بطاطين"]
+    },
+    {
+      "id": "POST-003",
+      "title": "استغاثة عاجلة: 4 أسر محاصرة في شارع الجمهورية بسبب مياه السيول",
+      "text": "أهالينا في شارع الجمهورية عمارة 14 الدور الأرضي والأول المياه دخلت البيوت والكهرباء مفصولة وفيه أطفال وكبار سن محتاجين قارب إنقاذ فوري لنقلهم.",
+      "category": "rescue",
+      "source": "بلاغ مواطن (تم التأكيد عبر الحماية المدنية)",
+      "source_type": "citizen_verified",
+      "credibility_score": 0.88,
+      "verified": true,
+      "location": "شارع الجمهورية - عمارة 14",
+      "lat": 31.0385,
+      "lng": 31.3820,
+      "timestamp": "منذ 45 دقيقة",
+      "tags": ["استغاثة", "إنقاذ", "غرق", "أطفال", "شارع الجمهورية"]
+    },
+    {
+      "id": "POST-004",
+      "title": "نقطة إسعاف مجانية وأدوية طوارئ بمستشفى الطوارئ الجامعي",
+      "text": "توافر أطقم طبية وأدوية إسعافات أولية وأنسولين ومحاليل للجفاف للأهالي المتضررين مجاناً في قسم الاستقبال بمستشفى طوارئ جامعة المنصورة.",
+      "category": "medical",
+      "source": "مستشفى الطوارئ الجامعي",
+      "source_type": "hospital",
+      "credibility_score": 0.97,
+      "verified": true,
+      "location": "مستشفى الطوارئ الجامعي",
+      "lat": 31.0415,
+      "lng": 31.3550,
+      "timestamp": "منذ ساعة",
+      "tags": ["طبي", "إسعاف", "أدوية", "مستشفى الطوارئ", "علاج"]
+    },
+    {
+      "id": "POST-005",
+      "title": "شائعة غير صحيحة: انقطاع كلي للمياه في محافظة الدقهلية لمدة أسبوع",
+      "text": "تنويه هام: ما تم تداوله عبر فيسبوك حول انقطاع مياه الشرب لمدة أسبوع غير صحيح تماماً. المياه مقطوعة احترازياً فقط عن المناطق المغمورة لمدة 3 ساعات لحين شفط المياه.",
+      "category": "warning",
+      "source": "شركة مياه الشرب والصرف الصحي",
+      "source_type": "fact_check",
+      "credibility_score": 0.95,
+      "verified": true,
+      "location": "محافظة الدقهلية",
+      "lat": 31.0360,
+      "lng": 31.3700,
+      "timestamp": "منذ ساعتين",
+      "tags": ["تنويه", "مياه", "تكذيب شائعة", "صرف صحي"]
+    },
+    {
+      "id": "POST-006",
+      "title": "منشور مجهول: سقوط كوبري طلخا بالكامل (غير موثق ومشبوه)",
+      "text": "أخبار عاجلة من صفحات غير معروفة تزعم انهيار كوبري طلخا بالكامل وتحذر من التواجد بالقرب منه (لا يوجد أي إخطار رسمي من المرور أو الحماية المدنية).",
+      "category": "rumor",
+      "source": "صفحة تواصل اجتماعي غير موثقة",
+      "source_type": "unverified_social",
+      "credibility_score": 0.20,
+      "verified": false,
+      "location": "كوبري طلخا",
+      "lat": 31.0530,
+      "lng": 31.3850,
+      "timestamp": "منذ 3 ساعات",
+      "tags": ["شائعة", "كوبري طلخا", "تحذير كاذب"]
+    }
+  ],
+  "road_network": {
+    "nodes": [
+      {"id": "N1", "name": "موقع المستغيث (You)", "lat": 31.0350, "lng": 31.3750, "is_user": true},
+      {"id": "N2", "name": "تقاطع شارع الجمهورية", "lat": 31.0380, "lng": 31.3770},
+      {"id": "N3", "name": "شارع الجيش (مغمور بالسيول)", "lat": 31.0410, "lng": 31.3800, "hazard_factor": 15.0},
+      {"id": "N4", "name": "طريق المشاية السفلي (آمن ومرتفع)", "lat": 31.0420, "lng": 31.3680, "hazard_factor": 1.0},
+      {"id": "N5", "name": "كوبري الجامعة", "lat": 31.0440, "lng": 31.3620, "hazard_factor": 1.0},
+      {"id": "N6", "name": "مركز إيواء الاستاد (الهدف)", "lat": 31.0460, "lng": 31.3650, "is_target": true},
+      {"id": "N7", "name": "مستشفى الطوارئ", "lat": 31.0415, "lng": 31.3550},
+      {"id": "N8", "name": "محطة مياه توريل", "lat": 31.0510, "lng": 31.3920}
+    ],
+    "edges": [
+      {"from": "N1", "to": "N2", "distance_km": 0.4, "hazard": "low"},
+      {"from": "N2", "to": "N3", "distance_km": 0.5, "hazard": "extreme_flood"},
+      {"from": "N3", "to": "N6", "distance_km": 1.1, "hazard": "extreme_flood"},
+      {"from": "N1", "to": "N4", "distance_km": 0.9, "hazard": "safe"},
+      {"from": "N4", "to": "N5", "distance_km": 0.6, "hazard": "safe"},
+      {"from": "N5", "to": "N6", "distance_km": 0.4, "hazard": "safe"},
+      {"from": "N4", "to": "N7", "distance_km": 1.1, "hazard": "safe"},
+      {"from": "N5", "to": "N7", "distance_km": 0.8, "hazard": "safe"},
+      {"from": "N3", "to": "N8", "distance_km": 1.4, "hazard": "moderate"}
+    ]
+  },
+  "matching_requests": [
+    {
+      "victim_id": "V-101",
+      "name": "عائلة أحمد عبد الله (5 أفراد)",
+      "needs": ["shelter", "food", "blankets"],
+      "urgency": "high",
+      "lat": 31.0370,
+      "lng": 31.3780
+    },
+    {
+      "victim_id": "V-102",
+      "name": "مريض سكر ومصاب جرح قطعي (سيد إبراهيم)",
+      "needs": ["medical", "first_aid"],
+      "urgency": "critical",
+      "lat": 31.0390,
+      "lng": 31.3720
+    },
+    {
+      "victim_id": "V-103",
+      "name": "دار رعاية أيتام (22 طفل)",
+      "needs": ["food", "clean_water", "shelter"],
+      "urgency": "critical",
+      "lat": 31.0440,
+      "lng": 31.3690
+    },
+    {
+      "victim_id": "V-104",
+      "name": "مواطنون بحي الدراسات (مياه شرب مقطوعة)",
+      "needs": ["clean_water"],
+      "urgency": "medium",
+      "lat": 31.0490,
+      "lng": 31.3890
+    }
+  ]
+}
