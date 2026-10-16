@@ -66,40 +66,19 @@ python core/algorithms_module.py
 # اختبار موديول الرؤية الحاسوبية وتحديد شدة الضرر من الصور
 python core/vision_module.py
 ```
-
 ---
 
-## 🎓 أهم أسئلة وإجابات مناقشة المشروع (Defense Cheatsheet)
+<div align="center">
 
-### س1: إزاي الـ 3 مواد مربوطين ببعض؟ (The Core Architecture)
-> **الإجابة:**  
-> "نظامنا بيستقبل بيانات الكارثة في شكلين: **نصوص وصور**.  
-> - **الـ Computer Vision** بيحلل صور الكارثة (زي صور شارع الجمهورية أو شارع الجيش) ويكتشف إن الطريق مغمور بمياه السيول بنسبة 68%.  
-> - مخرجات الرؤية دي بتدخل فوراً لـ **الـ Algorithms Module**، فتقوم خوارزمية **Dijkstra** برفع وزن تكلفة شارع الجيش بـ 1000 ضعف (Hazard Penalty)، وترسم مسار بديل آمن 100% عبر طريق المشاية السفلي.  
-> - في نفس الوقت، **الـ IR Engine** بيفلتر مئات الاستغاثات والمنشورات بالـ **BM25 و Inverted Index**، ويستبعد الشائعات (زي شائعة سقوط كوبري طلخا) ويوجه الناس للمنشورات الموثقة من الهلال الأحمر."
+**Built with teamwork by OCTAVE 🎀**
 
-### س2: إيه الخوارزميات المطبقة في الـ IR بالتفصيل؟
-> **الإجابة:**  
-> 1. معالجة النصوص العربية: إزالة التشكيل، توحيد الألفات (إ، أ، آ -> ا)، الياء والتاء المربوطة، وتصفية الـ Stopwords.  
-> 2. بناء **Inverted Index** يخزن تكرار الكلمات في كل وثيقة (Term Frequencies & Postings).  
-> 3. الترتيب باستخدام **Okapi BM25** بالمعادلة:  
->    $$\text{Score}(D, Q) = \sum_{q \in Q} \text{IDF}(q) \cdot \frac{f(q, D) \cdot (k_1 + 1)}{f(q, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}}\right)}$$  
-> 4. دمج **Credibility Scoring** لضرب نتائج المنشورات المجهولة في عامل تصغير (0.25) لمنع انتشار الشائعات وقت الأزمات.
+*One team. One vision. A safer tomorrow.*
 
-### س3: إيه خوارزميات الـ Algorithms وليه استخدمتوها؟
-> **الإجابة:**  
-> 1. **Dijkstra / A\* Algorithm:** لإيجاد أقصر مسار آمن. الفرق عندنا إن الـ Graph بياخد أوزان ديناميكية (`Effective_Cost = Distance * Hazard_Multiplier`).  
-> 2. **Maximum Bipartite Matching:** لمطابقة مجموعتين منفصلتين (المتضررين ومراكز الدعم) مع مراعاة السعة ونوع الخدمة (مأوى، إسعاف، مياه) مع **Priority Queue** لمنح الحالات الحرجة الأولوية.
+**OCTAVE Team | SafeReach Project**
 
-### س4: نموذج الـ Pattern Recognition بيشتغل إزاي؟
-> **الإجابة:**  
-> يعتمد على بنية **Object Detection (YOLO format)** للتعرف على كلاسات الكوارث:
-> `flooded_area`, `damaged_building`, `person_in_need`, `emergency_vehicle`, `safe_zone`.  
-> ويحسب مؤشر الخطورة **Damage Severity Index (DSI)**:  
-> $$\text{DSI} = 0.40 \cdot \text{Flood\_Ratio} + 0.45 \cdot \text{Building\_Damage\_Ratio} + \text{People\_Penalty}$$  
-> وبناء عليه يصدر النظام قراراً تكتيكياً فورياً (مثل: إرسال قوارب إغاثة مائية أو إخلاء المبنى).
+</div>
 
----
+
 
 ## 🏆 مميزات المشروع أمام لجنة التحكيم:
 * يغطي مشكلة واقعية تخدم أهداف التنمية المجتمعية والإنسانية.
