@@ -48,10 +48,6 @@
           <span>⚖️</span>
           <span>توزيع الموارد الذكي</span>
         </button>
-        <button class="tab-btn" data-tab="tab-academic">
-          <span>🎓</span>
-          <span>دليل المناقشة الأكاديمية</span>
-        </button>
       </nav>
     </div>
   </header>
@@ -354,87 +350,6 @@
             <div style="font-size:12px; color:var(--text-muted);">الحالات الحرجة المكتملة</div>
             <div style="font-size:24px; font-weight:bold; color:#dc2626;">2 من 2 (فوري)</div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================================================== -->
-    <!-- TAB 5: ACADEMIC DEFENSE & PRESENTATION GUIDE -->
-    <!-- ==================================================== -->
-    <section id="tab-academic" class="tab-content">
-      <div class="section-header">
-        <div class="section-title-wrap">
-          <h2>
-            <span>🎓 دليل المناقشة الأكاديمية والرد على أسئلة الدكاترة</span>
-            <span class="course-badge algorithms">IR + Algorithms + Pattern Recognition</span>
-          </h2>
-          <p class="section-desc">
-            إجابات نموذجية ومحكمة لكل سؤال متوقع في مناقشة المشروع أمام لجان التحكيم الجامعية.
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-card">
-        <div class="faq-q">
-          <span>❓ السؤال 1: إزاي ربطتوا الـ IR مع الـ Algorithms مع الـ Computer Vision في مشروع واحد؟</span>
-        </div>
-        <div class="faq-a">
-          <b>الإجابة:</b> في حالات الكوارث الطبيعية، البيانات بتوصل من مصدرين: <b>نصوص</b> (استغاثات ومنشورات) و<b>صور</b> (كاميرات وأقمار صناعية).
-          <br>1. <b>الـ Computer Vision (Pattern):</b> بيحلل صور الكارثة ويكتشف الطرق المغمورة بالسيول والمباني المنهارة.
-          <br>2. <b>الـ Algorithms:</b> بياخد مخرجات الرؤية الحاسوبية ويحول الطرق المغمورة إلى "أوزان إعاقة عالية"، فتقوم خوارزمية <b>Dijkstra / A*</b> برسم مسار آمن تلقائياً لتفادي الخطر.
-          <br>3. <b>الـ Information Retrieval (IR):</b> بيستقبل مئات آلاف المنشورات، ويفلتر الشائعات عبر <b>Inverted Index و BM25</b>، ويوجه المستغيثين للمصادر الرسمية الموثقة مثل الهلال الأحمر.
-        </div>
-      </div>
-
-      <div class="faq-card">
-        <div class="faq-q">
-          <span>❓ السؤال 2: إيه المعادلات والخوارزميات الفعلية المطبقة في كود الـ IR؟</span>
-        </div>
-        <div class="faq-a">
-          <b>الإجابة:</b>
-          طبقنا الـ <code class="code-inline">Inverted Index</code> مع <code class="code-inline">Okapi BM25</code> بالمعادلة القياسية:
-          <br><code class="code-inline">Score(D, Q) = Σ IDF(q) * [ (f(q, D) * (k1 + 1)) / (f(q, D) + k1 * (1 - b + b * (|D| / avgdl))) ]</code>
-          مع بارامترات <code class="code-inline">k1 = 1.5</code> و <code class="code-inline">b = 0.75</code>.
-          بالإضافة لـ <b>Credibility Filter</b> يدمج وزن موثوقية المصدر (<code class="code-inline">α * BM25 + (1 - α) * Credibility</code>) لإقصاء الشائعات وحجبها في حالات الطوارئ.
-        </div>
-      </div>
-
-      <div class="faq-card">
-        <div class="faq-q">
-          <span>❓ السؤال 3: إيه خوارزميات الـ Algorithms وليه اختارتوها؟</span>
-        </div>
-        <div class="faq-a">
-          <b>الإجابة:</b>
-          1. <b>خوارزمية Dijkstra / A*:</b> لحساب أقصر مسار على جراف شبكة الطرق (<code class="code-inline">O(E + V log V)</code>). الفرق الجوهري هنا هو <b>Dynamic Hazard Penalty</b>: الطريق المغمور لا يُعامل كمسافة عادية بل يُضرب في معامل خطورة <code class="code-inline">×1000</code> ليتم تجنبه.
-          <br>2. <b>خوارزمية Maximum Bipartite Matching:</b> لمطابقة مجموعتين ثنائيتين (مجموعة المتضررين ومجموعة مراكز الإغاثة) طبقاً للسعة المتاحة ونوع الدعم (مأوى، علاج، غذاء) مع <code class="code-inline">Priority Queue</code> لتسليم الحالات الحرجة أولاً.
-        </div>
-      </div>
-
-      <div class="faq-card">
-        <div class="faq-q">
-          <span>❓ السؤال 4: نموذج الـ Pattern Recognition بيشتغل إزاي وبيحسب الـ Severity منين؟</span>
-        </div>
-        <div class="faq-a">
-          <b>الإجابة:</b>
-          النموذج يعتمد على بنية كشف الأجسام (Object Detection - YOLO architecture) للتعرف على كلاسات محددة: <code class="code-inline">flooded_area</code>, <code class="code-inline">damaged_building</code>, <code class="code-inline">person_in_need</code>.
-          ويقوم بحساب مؤشر شدة الضرر (Disaster Damage Severity Index - DSI) بالمعادلة:
-          <br><code class="code-inline">DSI = (0.40 * Flood_Ratio) + (0.45 * Structural_Damage_Ratio) + People_Penalty</code>
-          وتصنيفها آلياً إلى درجات (Low, Moderate, Severe, Critical).
-        </div>
-      </div>
-
-      <div class="faq-card" style="background:#f0fdf4; border-color:#86efac;">
-        <div class="faq-q" style="color:#166534;">
-          <span>💡 مسارات ملفات الكود للمناقشة:</span>
-        </div>
-        <div class="faq-a" style="color:#14532d;">
-          تقدر تفتح الأكواد دي في الـ VS Code وتوريها للدكتور مباشرة:
-          <ul style="margin-top:6px; margin-right:20px; line-height:1.8;">
-            <li><b>كود استرجاع المعلومات:</b> <code class="code-inline">SafeReach/core/ir_engine.py</code></li>
-            <li><b>كود الخوارزميات والتوجيه والمطابقة:</b> <code class="code-inline">SafeReach/core/algorithms_module.py</code></li>
-            <li><b>كود الرؤية الحاسوبية وتحديد الضرر:</b> <code class="code-inline">SafeReach/core/vision_module.py</code></li>
-            <li><b>الواجهة التفاعلية والخريطة:</b> <code class="code-inline">SafeReach/web/index.html</code></li>
-          </ul>
         </div>
       </div>
     </section>
