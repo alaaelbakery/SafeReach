@@ -76,12 +76,16 @@ python core/vision_module.py
 * يجمع 3 مناهج في تطبيق واحد حي وشغال.
 * واجهة مستخدم احترافية بالكامل بالخريطة الحية ومحرك البحث وأداة فحص الصور.
 
+---
+
 <div align="center">
 
 **Built with teamwork by OCTAVE 🎀**
 
 *One team. One vision. A safer tomorrow.*
 
-**OCTAVE Team | SafeReach Project**
+<sub>Hagar Mahmoud Ahmed · Rana Hany Ali · Eman Abdelrahman Mohamed · Alaa Salah Bakr</sub>
+
+<sub>Shahd Alhindawy · Zainab Talaat Antar · Shahd Atef Hendy · Thuraya Samy Abdelati</sub>
 
 </div>
